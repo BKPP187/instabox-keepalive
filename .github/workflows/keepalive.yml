@@ -1,0 +1,16 @@
+name: keepalive
+on:
+  schedule:
+    - cron: '*/10 0-17 * * *'
+  workflow_dispatch:
+jobs:
+  poke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: poke box
+        env:
+          INSTABOX_API_KEY: ${{ secrets.INSTABOX_API_KEY }}
+        run: |
+          curl -fsSL https://instabox.sh/install.sh -o i.sh
+          INSTABOX_INSTALL_DIR=$HOME/bin sh i.sh >/dev/null
+          $HOME/bin/instabox exec private-proxy -- true
