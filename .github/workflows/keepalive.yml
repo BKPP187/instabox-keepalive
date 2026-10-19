@@ -10,7 +10,9 @@ jobs:
       - name: poke box
         env:
           INSTABOX_API_KEY: ${{ secrets.INSTABOX_API_KEY }}
+          INSTABOX_API_URL: https://api.instabox.sh
         run: |
+          if [ -z "$INSTABOX_API_KEY" ]; then echo "secret INSTABOX_API_KEY is empty or missing"; exit 1; fi
           curl -fsSL https://instabox.sh/install.sh -o i.sh
           INSTABOX_INSTALL_DIR=$HOME/bin sh i.sh >/dev/null
           $HOME/bin/instabox exec private-proxy -- true
